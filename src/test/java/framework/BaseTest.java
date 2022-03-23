@@ -2,15 +2,9 @@ package framework;
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
-import steam.pages.SteamDownloadPage;
 
-public abstract class BaseTest extends Browser {
+public abstract class BaseTest extends BaseEntity {
 
-    @BeforeTest (description = "removing file")
-    public void trashClean(){
-        SteamDownloadPage steamUninstall = new SteamDownloadPage();
-        steamUninstall.deleteSteamBeforeTest(steamUninstall.isFilePresent());
-    }
 
     @BeforeTest (description = "opening browser")
     public void driverStart(){
@@ -19,6 +13,6 @@ public abstract class BaseTest extends Browser {
 
     @AfterTest
     public void testCompletion(){
-        driverClose();
+        tearDown();
     }
 }

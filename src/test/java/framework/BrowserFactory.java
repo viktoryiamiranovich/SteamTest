@@ -10,21 +10,19 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.testng.Assert;
 import java.util.HashMap;
 
-import static framework.PropertyReader.seleniumPropertyPath;
-
-public class BrowserFactory{
+public class BrowserFactory extends BaseEntity{
 
     public static String browser;
 
     public static WebDriver createDriver(){
+
         WebDriver driver=null;
-        PropertyReader propertyManager = new PropertyReader();
-        browser = propertyManager.getExactProperty(seleniumPropertyPath,"browser");
+        browser = configProperties.getProperty("browser");
         switch (browser) {
             case "chrome" : {
                 HashMap<String, Object> chromePrefs = new HashMap<>();
                 chromePrefs.put("profile.default_content_settings.popups", 0);
-                chromePrefs.put("download.default_directory", System.getProperty("user.dir") + propertyManager.getExactProperty(seleniumPropertyPath, "steam_save_dir"));
+                chromePrefs.put("download.default_directory", System.getProperty("user.dir") + configProperties.getProperty("tempFolder"));
                 chromePrefs.put("safebrowsing.enabled", "true");
                 ChromeOptions options = new ChromeOptions();
                 options.setExperimentalOption("prefs", chromePrefs);
@@ -35,7 +33,7 @@ public class BrowserFactory{
             case "firefox" : {
                 FirefoxProfile profile = new FirefoxProfile();
                 profile.setPreference("browser.download.folderList", 2);
-                profile.setPreference("browser.download.dir",System.getProperty("user.dir") + propertyManager.getExactProperty(seleniumPropertyPath, "steam_save_dir"));
+                profile.setPreference("browser.download.dir",System.getProperty("user.dir") + configProperties.getProperty("tempFolder"));
                 profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "application/csv, text/csv, text/plain,application/octet-stream doc xls pdf txt");
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 WebDriverManager.firefoxdriver().setup();

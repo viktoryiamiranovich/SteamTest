@@ -1,6 +1,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
 <suite name="SteamTest" verbose="1" >
+    <!--en or ru-->
+    <parameter name="Language"  value="en"/>
     <test name="OpenGameAndDownloadSteamTest" >
         <classes>
             <class name="steam.test.SteamTest"/>

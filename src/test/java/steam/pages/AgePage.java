@@ -1,14 +1,20 @@
 package steam.pages;
 
+import framework.BaseEntity;
+import framework.BasePage;
+import framework.PropertyReader;
 import framework.elements.Button;
 import framework.elements.Dropdown;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
-public class AgePage {
+public class AgePage extends BaseEntity {
+
     Dropdown inputDayDropdown = new Dropdown(By.xpath("//select[@name='ageDay']"));
     Dropdown inputMonthDropdown = new Dropdown(By.xpath("//select[@name='ageMonth']"));
-    Dropdown inputAgeDropdown = new Dropdown(By.xpath("//select[@name='ageYear']"));
+    Dropdown inputYearDropdown = new Dropdown(By.xpath("//select[@name='ageYear']"));
+    Button btnViewPage = new Button(By.id("view_product_page_btn"));
+
 
     public boolean isAgeCheckPageOpened() {
         try {
@@ -18,12 +24,11 @@ public class AgePage {
         }
     }
 
-    public void ageCheckActions(String input_day, String input_month, String input_age, String openPageBtnText) {
-        inputDayDropdown.select(input_day);
-        inputMonthDropdown.select(input_month);
-        inputAgeDropdown.select(input_age);
-        Button openPageBtn = new Button(By.xpath(String.format("//span[contains(text(), '%s')]", openPageBtnText)));
-        openPageBtn.click();
+    public void ageCheckActions() {
+        inputDayDropdown.select(configProperties.getProperty("input_day"));
+        inputMonthDropdown.select(configProperties.getProperty("input_month"));
+        inputYearDropdown.select(configProperties.getProperty("input_year"));
+        btnViewPage.click();
     }
 
 }

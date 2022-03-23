@@ -1,7 +1,6 @@
 package framework.elements;
 
-import framework.Browser;
-import framework.PropertyReader;
+import framework.BaseEntity;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -14,15 +13,15 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class BaseElement {
-    WebDriver driver = Browser.driver;
-    WebDriverWait wait = new WebDriverWait(driver, 5);
+public class BaseElement extends BaseEntity {
+
     By locator;
     WebElement element;
     List<WebElement> elementList;
-    PropertyReader propertyReader = new PropertyReader();
 
-    public BaseElement(By locator){
+    WebDriverWait wait = new WebDriverWait(driver, Integer.parseInt(configProperties.getProperty("implicit_wait")));
+
+    public BaseElement(By locator) {
         this.locator = locator;
     }
 
@@ -91,7 +90,7 @@ public class BaseElement {
             return false;
         }
         try {
-            driver.manage().timeouts().implicitlyWait(Integer.parseInt(propertyReader.getExactProperty(PropertyReader.seleniumPropertyPath, "implicit_wait")), TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(Integer.parseInt(configProperties.getProperty("implicit_wait")), TimeUnit.SECONDS);
             return element.isDisplayed();
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +117,7 @@ public class BaseElement {
             }
         });
         try {
-            driver.manage().timeouts().implicitlyWait(Integer.parseInt(propertyReader.getExactProperty(PropertyReader.seleniumPropertyPath, "implicit_wait")), TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(Integer.parseInt(configProperties.getProperty("implicit_wait")), TimeUnit.SECONDS);
             return element.isDisplayed();
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,7 +126,7 @@ public class BaseElement {
     }
 
     public void waitForPageToLoad() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Integer.parseInt(propertyReader.getExactProperty(PropertyReader.seleniumPropertyPath, "implicit_wait"))));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Integer.parseInt(configProperties.getProperty("implicit_wait"))));
         try {
             wait.until((ExpectedCondition<Boolean>) d -> {
                 if (!(d instanceof JavascriptExecutor)) {

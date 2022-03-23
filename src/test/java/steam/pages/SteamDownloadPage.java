@@ -1,29 +1,42 @@
 package steam.pages;
 
-import framework.BaseEntity;
-import framework.PropertyReader;
+import framework.BasePage;
 import framework.elements.Button;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import java.io.File;
+import java.io.IOException;
 
-import static framework.PropertyReader.seleniumPropertyPath;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.NoSuchElementException;
 
 
-public class SteamDownloadPage extends BaseEntity {
+public class SteamDownloadPage extends BasePage {
 
-    PropertyReader propertyReader = new PropertyReader();
-    File steamFile = new File(System.getProperty("user.dir") + propertyReader.getExactProperty(seleniumPropertyPath, "steam_save_dir")
-            + (propertyReader.getExactProperty(seleniumPropertyPath, "app_name")));
+    private static String winFileName="SteamSetup.exe";
+    private static String linuxFileName="steam_latest.deb";
+    private static String macFileName="steam.dmg";
+    private static File tempDir;
+    private static String installFile;
+    private static String tempFolder = configProperties.getProperty("tempFolder");
+    private File fileToCheck;
 
-    @Override
-    public void isCorrectPageOpened(String currentValue) {
-        Assert.assertEquals(getTitle(), currentValue);
+
+    static {
+        try {
+            tempDir = new File(System.getProperty("user.dir")+tempFolder).getCanonicalFile();
+        } catch (IOException e) {
+            System.out.println("Could not get canonical path");
+        }
     }
 
+    public SteamDownloadPage() {
+        super(By.xpath("//div[@class='online_stats']"),"Steam Download Page");
+    }
 
     public boolean waitForFileDownload(final File file) {
         return (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
@@ -34,19 +47,18 @@ public class SteamDownloadPage extends BaseEntity {
         });
     }
 
-    public void downloadSteam(String downloadSteamBtnText){
-        Button downloadSteamBtn = new Button(By.xpath(String.format("//a[text()='%s']", downloadSteamBtnText)));
+    public void downloadSteam(){
+        Button downloadSteamBtn = new Button(By.xpath(String.format("//a[@class='about_install_steam_link']")));
         downloadSteamBtn.click();
-        this.waitForFileDownload(steamFile);
-    }
-
-    public boolean isFilePresent(){
-        return steamFile.exists();
-    }
-
-    public void deleteSteamBeforeTest(boolean bool){
-        if(bool){
-            steamFile.delete();
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            installFile=winFileName;
+        } else if (System.getProperty("os.name").toLowerCase().contains("linux")){
+            installFile=linuxFileName;
+        } else {
+            installFile=macFileName;
         }
+        fileToCheck = new File(tempDir+"/"+installFile);//tempDir.listFiles()[0];
+        this.waitForFileDownload(fileToCheck);
     }
+
 }

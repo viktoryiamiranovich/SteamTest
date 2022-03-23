@@ -1,27 +1,35 @@
 package framework;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 public class PropertyReader {
-    public static String seleniumPropertyPath = "src/test/resources/config.properties";
+    private static String configPath = "src/test/resources/%s.properties";
+    private static String file;
+    private BufferedReader bufferedReader;
+    private Properties properties;
 
-    public String getExactProperty(String propertyPath, String propertyName){
-        FileInputStream inputStream = null;
+    public PropertyReader(String fileName) {
+
         try {
-            inputStream = new FileInputStream(propertyPath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Properties property = new Properties();
-        try {
-            property.load(inputStream);
+            file = String.format(configPath, fileName);
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(file).getCanonicalPath()), "UTF-8"));
+            properties = new Properties();
+            properties.load(bufferedReader);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("File does not exist");
+        } finally {
+            if (bufferedReader != null)
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    System.out.println("Could not close configuration file");
+                }
         }
-        return property.getProperty(propertyName);
+    }
+
+    public String getProperty(String key) {
+        return properties.getProperty(key);
     }
 
 }
