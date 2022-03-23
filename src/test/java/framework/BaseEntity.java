@@ -25,7 +25,7 @@ public class BaseEntity {
 
     public static void initProperties() {
         configProperties = new PropertyReader("config");
-        languageProperties = new PropertyReader(configProperties.getProperty("language"));
+        languageProperties = new PropertyReader(System.getProperty("language"));
     }
 
     public static void deleteTempFiles() {

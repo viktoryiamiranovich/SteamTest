@@ -35,7 +35,7 @@ public class LangMenu extends BaseEntity {
 
         if (!propertyLanguage.equals(pageLanguage)) {
             btnLanguage.click();
-            lblLanguage = new Label(By.xpath((String.format(languageLocator, Language.valueOf(configProperties.getProperty("language").toUpperCase()).language))));
+            lblLanguage = new Label(By.xpath((String.format(languageLocator, Language.valueOf(System.getProperty("language").toUpperCase()).language))));
             lblLanguage.clickAndWait();
         }
     }

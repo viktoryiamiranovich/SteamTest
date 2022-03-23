@@ -1,16 +1,14 @@
 package steam.test;
 
 import framework.BaseTest;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import steam.menu.MainMenu;
 import steam.pages.*;
 
 public class SteamTest extends BaseTest {
 
-    @Parameters({ "Language" }) // specified in the testng.xml file
     @Test(description = "Select action game and download Steam")
-    public void steamDownloadCheck(String language) {
+    public void steamDownloadCheck() {
 
         HomePage homePage = new HomePage();
         homePage.languageMenu.chooseLanguage();

@@ -3,21 +3,18 @@ package framework.elements;
 import framework.BaseEntity;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class BaseElement extends BaseEntity {
 
     By locator;
     WebElement element;
-    List<WebElement> elementList;
 
     WebDriverWait wait = new WebDriverWait(driver, Integer.parseInt(configProperties.getProperty("implicit_wait")));
 
@@ -42,16 +39,6 @@ public class BaseElement extends BaseEntity {
         waitForPageToLoad();
     }
 
-    public void scrollToElement() {
-        waitUntilPresent();
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
-    }
-
-    public List<WebElement> getElementList(){
-        if (arePresent()) return elementList;
-        else return null;
-    }
-
     public WebElement getElement(){
         waitUntilPresent();
         return element;
@@ -67,36 +54,6 @@ public class BaseElement extends BaseEntity {
         return getElement().getText();
     }
 
-    private boolean arePresent() {
-        try {
-            wait.until((ExpectedCondition<Boolean>) new ExpectedCondition<Boolean>() {
-                public Boolean apply(final WebDriver driver) {
-                    try {
-                        elementList = driver.findElements(locator);
-                        for (WebElement el : elementList) {
-                            if (el != null && el.isDisplayed()) {
-                                element = el;
-                                return element.isDisplayed();
-                            }
-                        }
-                        element = driver.findElement(locator);
-                    } catch (Exception e) {
-                        return false;
-                    }
-                    return element.isDisplayed();
-                }
-            });
-        } catch (Exception e) {
-            return false;
-        }
-        try {
-            driver.manage().timeouts().implicitlyWait(Integer.parseInt(configProperties.getProperty("implicit_wait")), TimeUnit.SECONDS);
-            return element.isDisplayed();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public boolean isPresent() {
         try {
