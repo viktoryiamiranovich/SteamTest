@@ -28,7 +28,7 @@ public class SteamDownloadPage extends BasePage {
 
     static {
         try {
-            tempDir = new File(System.getProperty("user.dir")+tempFolder).getCanonicalFile();
+            tempDir = new File(tempFolder).getCanonicalFile();
         } catch (IOException e) {
             System.out.println("Could not get canonical path");
         }
