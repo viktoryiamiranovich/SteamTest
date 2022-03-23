@@ -8,8 +8,9 @@ public abstract class BaseTest extends BaseEntity {
 
     public static final Logger log = Logger.getLogger(BaseTest.class);
 
-    @BeforeTest (description = "opening browser")
+    @BeforeTest
     public void driverStart(){
+        log.info("Open browser");
         setup();
     }
 
