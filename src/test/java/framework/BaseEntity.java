@@ -31,15 +31,13 @@ public class BaseEntity {
     public static void deleteTempFiles() {
         String dirPath = null;
         try {
-            dirPath = new File(System.getProperty("user.dir")
-                    + configProperties.getProperty("tempFolder")).getCanonicalPath();
+            dirPath = new File(configProperties.getProperty("tempFolder")).getCanonicalPath();
         } catch (IOException e) {
             System.out.println("Could not get canonical path");
         }
 
         File dir = new File(dirPath);
         for (File f : dir.listFiles()) {
-            System.out.println(String.valueOf(f));
                 f.delete();
         }
     }
