@@ -39,7 +39,7 @@ public class BaseEntity {
 
         File dir = new File(dirPath);
         for (File f : dir.listFiles()) {
-            if (!f.isDirectory())
+            System.out.println(String.valueOf(f));
                 f.delete();
         }
     }
