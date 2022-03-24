@@ -24,18 +24,17 @@ public class LangMenu extends BaseEntity {
     private static String propertyLanguage;
     private static String pageLanguage;
 
-
     public LangMenu() {
     }
 
-    public void chooseLanguage() {
+    public void chooseLanguage(String lang) {
         btnLanguage.waitUntilPresent();
         propertyLanguage = languageProperties.getProperty("language");
         pageLanguage = btnLanguage.getText();
 
         if (!propertyLanguage.equals(pageLanguage)) {
             btnLanguage.click();
-            lblLanguage = new Label(By.xpath((String.format(languageLocator, Language.valueOf(System.getProperty("language").toUpperCase()).language))));
+            lblLanguage = new Label(By.xpath((String.format(languageLocator, Language.valueOf(lang.toUpperCase()).language))));
             lblLanguage.clickAndWait();
         }
     }

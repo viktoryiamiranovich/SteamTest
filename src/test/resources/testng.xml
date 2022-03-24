@@ -2,7 +2,7 @@
 
 <suite name="SteamTest" verbose="1" >
     <!--en or ru-->
-    <parameter name="Language"  value="en"/>
+    <parameter name="Language"  value="ru"/>
     <test name="OpenGameAndDownloadSteamTest" >
         <classes>
             <class name="steam.test.SteamTest"/>

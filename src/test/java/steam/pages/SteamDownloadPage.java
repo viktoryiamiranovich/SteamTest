@@ -9,12 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.NoSuchElementException;
-
-
 public class SteamDownloadPage extends BasePage {
 
     private static String winFileName="SteamSetup.exe";
@@ -25,7 +19,6 @@ public class SteamDownloadPage extends BasePage {
     private static String tempFolder = configProperties.getProperty("tempFolder");
     private File fileToCheck;
 
-
     static {
         try {
             tempDir = new File(tempFolder).getCanonicalFile();
@@ -35,7 +28,7 @@ public class SteamDownloadPage extends BasePage {
     }
 
     public SteamDownloadPage() {
-        super(By.xpath("//div[@class='online_stats']"),"Steam Download Page");
+        super(By.xpath("//div[@id='global_header']"),"Steam Download Page");
     }
 
     public boolean waitForFileDownload(final File file) {
@@ -59,6 +52,20 @@ public class SteamDownloadPage extends BasePage {
         }
         fileToCheck = new File(tempDir+"/"+installFile);//tempDir.listFiles()[0];
         this.waitForFileDownload(fileToCheck);
+    }
+
+    public static void deleteTempFiles() {
+        String dirPath = null;
+        try {
+            dirPath = new File(tempFolder).getCanonicalPath();
+        } catch (IOException e) {
+            System.out.println("Could not get canonical path");
+        }
+
+        File dir = new File(dirPath);
+        for (File f : dir.listFiles()) {
+            f.delete();
+        }
     }
 
 }

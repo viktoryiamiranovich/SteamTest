@@ -17,7 +17,7 @@ public class BrowserFactory extends BaseEntity{
     public static WebDriver createDriver(){
 
         WebDriver driver=null;
-        browser = System.getProperty("browser");
+        browser = configProperties.getProperty("browser");
         switch (browser) {
             case "chrome" : {
                 HashMap<String, Object> chromePrefs = new HashMap<>();

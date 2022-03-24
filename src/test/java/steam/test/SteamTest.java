@@ -1,19 +1,28 @@
 package steam.test;
 
 import framework.BaseTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import steam.menu.MainMenu;
 import steam.pages.*;
 
 public class SteamTest extends BaseTest {
 
+    @BeforeTest
+    public void trashClean(){
+        SteamDownloadPage downloadPage = new SteamDownloadPage();
+        downloadPage.deleteTempFiles();
+    }
+
+    @Parameters({"Language"})
     @Test(description = "Select action game and download Steam")
-    public void steamDownloadCheck() {
+    public void steamDownloadCheck(String lang) {
 
         log.info("Open Steam");
         HomePage homePage = new HomePage();
         log.info("Select language");
-        homePage.languageMenu.chooseLanguage();
+        homePage.languageMenu.chooseLanguage(lang);
         log.info("Go to Action page");
         homePage.gamesMenu.navigateMenu(MainMenu.Menu.CATEGORY, MainMenu.Games.ACTION);
 
